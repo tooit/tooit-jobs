@@ -1,0 +1,5 @@
+name = Modesto Caballero Module
+description = "Provides a form using Form API"
+package = modestocaballero
+core = 7.x
+;configure = admin/config/administration/admin_menu

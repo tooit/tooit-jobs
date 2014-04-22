@@ -1,0 +1,106 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function modestocaballero_menu() {
+  $items = array();
+
+  $items['modestocaballero'] = array(
+    'title' => 'Modesto Caballero Form',
+    'description' => 'It\'s a form',
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('modestocaballero_form'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Provides a form that proves I know Form API.
+ */
+function modestocaballero_form() {
+  $form = array();
+
+  // Markup item. Showing how to use theme_wrappers.
+  $form['markup'] = array(
+    '#tag' => 'p',
+    '#value' => 'Some text in here. No need for a #type. Suspendisse et lectus massa. Nulla quis tempus tortor. Donec viverra imperdiet feugiat. Ut auctor cursus turpis sed porta. Nunc eget nibh elit. Mauris sollicitudin felis quis auctor consectetur. Nulla viverra varius lacinia. Curabitur sit amet adipiscing justo. Phasellus tempus venenatis justo, sed bibendum sem vehicula quis. In dapibus erat eu nulla ultricies tempor. Praesent faucibus dui in auctor semper. Duis egestas id nisl ut euismod. Phasellus condimentum mi a augue dignissim consequat. Morbi tristique nunc non laoreet eleifend. Aliquam dignissim nulla vitae ipsum convallis vulputate. Integer luctus tempus tortor, ut malesuada metus rutrum malesuada.',
+    '#theme_wrappers' => array('html_tag'),
+  );
+
+  // A mandatory textfield.
+  $form['textfield'] = array(
+    '#title' => t('This is a textfield'),
+    '#type' => 'textfield',
+    '#required' => TRUE,
+    '#description' => t('Text must be 10 chars or longer'),
+  );
+
+  // A textarea.
+  $form['textarea'] = array(
+    '#title' => t('This is a textarea'),
+    '#type' => 'textarea',
+    '#description' => t('If it\'s not empty, it should include the world Modesto'),
+  );
+
+  // A group of checkboxes.
+  $form['checkboxes'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Some checkboxes'),
+    '#options' => array(
+      1 => t('one'),
+      2 => t('two'),
+      3 => t('three'),
+      4 => t('four'),
+    ),
+    '#required' => TRUE,
+    '#description' => t('Please select two or more'),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+
+  return $form;
+}
+
+/**
+ * Validate function for modestocaballero_form.
+ * Checks some restrictions.
+ */
+function modestocaballero_form_validate($form, &$form_state) {
+  $values = $form_state['values'];
+  // Texffield needs to be longer than 10 chars.
+  if (strlen($values['textfield']) < 10) {
+    form_set_error('textfield', t('Text on textfield should be 10 characters or longer'));
+  }
+  // Checkboxes need two options or more selected.
+  $selected_checkboxes = 0;
+  foreach ($values['checkboxes'] as $value) {
+    if ($value != 0) {
+      $selected_checkboxes++;
+    }
+  }
+
+  if ($selected_checkboxes < 2) {
+    form_set_error('checkboxes', t('You should select two or more checkboxes'));
+  }
+
+  // Textarea may be empty, but if it's not, it needs to include the word Modesto, case insensitive.
+  if ($values['textarea'] != "" && stripos($values['textarea'], 'modesto') === FALSE ) {
+    form_set_error('textarea', t('You need a Modesto into that textarea!'));
+  }
+}
+
+/**
+ * Submit function for modestocaballero_form
+ */
+function modestocaballero_form_submit($form, &$form_state) {
+  // just show a success message if we're here.
+  // If we're here, that means all validations are ok, yay!
+  drupal_set_message(t('Eh, that was great! No errors!'));
+}
