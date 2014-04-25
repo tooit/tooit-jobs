@@ -1,0 +1,4 @@
+name = Site Configurations
+description = Custom site configurations
+package = Custom Modules
+core = 7.x

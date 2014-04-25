@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * Implement hook_menu().
+ */
+function site_config_menu(){
+    $items = array();
+    
+    $items['url_form']=array(
+    'title' => 'FORM API',
+    'page callback' => '_site_config_custom_form',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+            );
+
+    
+    return $items;
+}
+
+function _site_config_custom_form(){
+    $form = array();
+    $form['keywords'] = array(
+    '#title' => t('Form element'),
+    '#type' => 'textarea',
+    '#value' => '',
+    );
+    $form['submit'] = array(
+    '#type' => 'submit', 
+    '#value' => t('Submit!')
+    );
+    return $form;
+}
