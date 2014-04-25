@@ -53,9 +53,7 @@ function bootstrap_preprocess_page(&$variables) {
   else {
     $variables['navbar_classes_array'][] = 'navbar-default';
   }
-  if($bootstrap_preprocess_page !== 1){
-    watchdog('notice', 'An error ocurred.');
-  }
+
 }
 
 /**
